@@ -49,8 +49,17 @@ export class ProductsService {
     return product;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, updateProductDto: UpdateProductDto) {
+    const productoToUpdate = await this.findOne(id);
+
+    const newProduct = await this.prisma.product.update({
+      where: {
+        id: productoToUpdate.id,
+      },
+      data: updateProductDto,
+    });
+
+    return newProduct;
   }
 
   remove(id: number) {
